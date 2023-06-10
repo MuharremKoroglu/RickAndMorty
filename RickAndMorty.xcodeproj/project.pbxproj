@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B75AE052A34B4A400EDFC10 /* RMRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B75AE042A34B4A400EDFC10 /* RMRequest.swift */; };
+		3B75AE072A34B4B000EDFC10 /* RMApiCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B75AE062A34B4B000EDFC10 /* RMApiCall.swift */; };
 		3BAC10452A347E9A00986DFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC10442A347E9A00986DFC /* AppDelegate.swift */; };
 		3BAC10472A347E9A00986DFC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC10462A347E9A00986DFC /* SceneDelegate.swift */; };
 		3BAC10492A347E9A00986DFC /* RMTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC10482A347E9A00986DFC /* RMTabBarController.swift */; };
@@ -40,6 +42,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B75AE042A34B4A400EDFC10 /* RMRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMRequest.swift; sourceTree = "<group>"; };
+		3B75AE062A34B4B000EDFC10 /* RMApiCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMApiCall.swift; sourceTree = "<group>"; };
 		3BAC10412A347E9A00986DFC /* RickAndMorty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMorty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3BAC10442A347E9A00986DFC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3BAC10462A347E9A00986DFC /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -149,6 +153,8 @@
 		3BAC10752A347F8B00986DFC /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				3B75AE042A34B4A400EDFC10 /* RMRequest.swift */,
+				3B75AE062A34B4B000EDFC10 /* RMApiCall.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -326,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BAC107E2A3480E800986DFC /* RMLocationModel.swift in Sources */,
+				3B75AE052A34B4A400EDFC10 /* RMRequest.swift in Sources */,
 				3BAC10492A347E9A00986DFC /* RMTabBarController.swift in Sources */,
 				3BAC10452A347E9A00986DFC /* AppDelegate.swift in Sources */,
 				3BAC107C2A3480DB00986DFC /* RMCharacterModel.swift in Sources */,
@@ -333,6 +340,7 @@
 				3BAC10472A347E9A00986DFC /* SceneDelegate.swift in Sources */,
 				3BAC10822A34847D00986DFC /* RMCharacterViewController.swift in Sources */,
 				3BAC10842A34848E00986DFC /* RMEpisodeViewController.swift in Sources */,
+				3B75AE072A34B4B000EDFC10 /* RMApiCall.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

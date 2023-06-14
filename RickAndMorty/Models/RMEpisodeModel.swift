@@ -15,14 +15,15 @@ struct Episodes: Codable {
 // MARK: - Result
 struct EpisodesResult: Codable {
     let id: Int
-    let name, airDate, episode: String
+    let name: String
+    let date: String
+    let episode: String
     let characters: [String]
     let url: String
     let created: String
 
     enum CodingKeys: String, CodingKey {
-        case id, name
-        case airDate
-        case episode, characters, url, created
+        case id, name, episode, characters, url, created
+        case date = "air_date"
     }
 }

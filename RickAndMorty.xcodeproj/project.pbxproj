@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3B3A22EF2A401DD0007E774A /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B3A22EE2A401DD0007E774A /* LocationView.swift */; };
 		3B75AE052A34B4A400EDFC10 /* RMRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B75AE042A34B4A400EDFC10 /* RMRequest.swift */; };
 		3B75AE072A34B4B000EDFC10 /* RMApiCall.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B75AE062A34B4B000EDFC10 /* RMApiCall.swift */; };
 		3BAC10452A347E9A00986DFC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3BAC10442A347E9A00986DFC /* AppDelegate.swift */; };
@@ -47,6 +48,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3B3A22EE2A401DD0007E774A /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		3B75AE042A34B4A400EDFC10 /* RMRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMRequest.swift; sourceTree = "<group>"; };
 		3B75AE062A34B4B000EDFC10 /* RMApiCall.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RMApiCall.swift; sourceTree = "<group>"; };
 		3BAC10412A347E9A00986DFC /* RickAndMorty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RickAndMorty.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -183,6 +185,7 @@
 			isa = PBXGroup;
 			children = (
 				3BF06EE92A35FBC80051B124 /* CharacterView.swift */,
+				3B3A22EE2A401DD0007E774A /* LocationView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3BF06EE62A35F7130051B124 /* RMLocationViewModel.swift in Sources */,
+				3B3A22EF2A401DD0007E774A /* LocationView.swift in Sources */,
 				3BF06EE42A35F7050051B124 /* RMCharacterViewModel.swift in Sources */,
 				3BAC107E2A3480E800986DFC /* RMLocationModel.swift in Sources */,
 				3B75AE052A34B4A400EDFC10 /* RMRequest.swift in Sources */,

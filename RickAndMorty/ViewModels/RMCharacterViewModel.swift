@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CharacterViewModel : NSObject {
+class CharacterViewModel {
     
     var allcharacters : [AllCharacters] = []
     private let service = RMApiCall()

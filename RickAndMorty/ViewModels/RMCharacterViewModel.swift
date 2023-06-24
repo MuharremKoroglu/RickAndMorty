@@ -7,21 +7,33 @@
 
 import UIKit
 
+protocol CharacterViewModelDelegate : AnyObject {
+    func didLoadInıtialCharacter ()
+}
+
 class CharacterViewModel {
     
-    var allcharacters : [AllCharacters] = []
+    weak var delegate : CharacterViewModelDelegate?
+    var cellViewModel : [RMCharacterCollectionViewCellViewModel] = []
     private let service = RMApiCall()
     
     func fetchCharacterdata (request : RMRequest) {
         
-        service.executeApiCall(request: request, dataType: AllCharacters.self) { result in
+        service.executeApiCall(request: request, dataType: AllCharacters.self) { [weak self] result in
             switch result {
             case .failure(let error):
                 print(error)
-            case .success(let characters):
+            case .success(let model):
                 DispatchQueue.main.async {
-                    self.allcharacters.append(characters)
+                    let characters = model.results
+                    for character in characters {
+                        let viewModel = RMCharacterCollectionViewCellViewModel(characterName: character.name, characterStatus: character.status, characterGender: character.gender, characterImage: URL(string: character.image))
+                        self?.cellViewModel.append(viewModel)
+                        self?.delegate?.didLoadInıtialCharacter()
+                        
+                    }
                 }
+                
             }
         }
     }

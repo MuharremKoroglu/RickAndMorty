@@ -1,15 +1,14 @@
 //
-//  CharacterView.swift
+//  LocationView.swift
 //  RickAndMorty
 //
-//  Created by Muharrem Köroğlu on 11.06.2023.
+//  Created by Muharrem Köroğlu on 19.06.2023.
 //
 
+import Foundation
 import UIKit
 
-class CharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
-    private let viewModel = CharacterViewModel()
+class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
     
     private let spinner : UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -21,9 +20,9 @@ class CharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
     private let collectionView : UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = .horizontal
         layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
-        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.isHidden = true
@@ -38,7 +37,6 @@ class CharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
         addConstraint()
         spinner.startAnimating()
         
-        viewModel.fetchCharacterdata(request: RMRequest(endPoints: .character))
     }
     
     required init?(coder: NSCoder) {
@@ -81,18 +79,18 @@ class CharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
-        cell.backgroundColor = .green
+        cell.layer.cornerRadius = 20
+        cell.backgroundColor = .orange
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let bounds = UIScreen.main.bounds
         let width = (bounds.width - 30) / 2
-        let height = width * 1.5
+        let height = width * 0.25
         
         return CGSize(width: width, height: height)
     }
     
+    
 }
-
-

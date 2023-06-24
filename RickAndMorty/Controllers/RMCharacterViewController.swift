@@ -9,8 +9,8 @@ import UIKit
 
 class RMCharacterViewController: UIViewController {
     
-    private let characterView = CharacterView()
-    private let locationView = LocationView()
+    private let characterView = RMCharacterView()
+    private let locationView = RMLocationView()
 
     override func viewDidLoad() {
         super.viewDidLoad()

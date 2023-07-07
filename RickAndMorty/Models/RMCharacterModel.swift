@@ -26,7 +26,7 @@ struct Characters: Codable {
     let id: Int
     let name: String
     let status: CharacterStatus
-    let species: CharacterSpecies
+    let species: String
     let type: String
     let gender: CharacterGender
     let origin: CharacterOrigin
@@ -52,21 +52,17 @@ struct CharacterOrigin: Codable {
 enum CharacterGender: String, Codable {
     case female = "Female"
     case male = "Male"
+    case genderless = "Genderless"
     case unknown = "unknown"
     
     var genderText : String {
         switch self {
-        case .female, .male:
+        case .female, .male, .genderless:
             return rawValue
         case .unknown:
             return "Unknown"
         }
     }
-}
-
-enum CharacterSpecies: String, Codable {
-    case alien = "Alien"
-    case human = "Human"
 }
 
 enum CharacterStatus: String, Codable {

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CharacterViewModelDelegate : AnyObject {
-    func didLoadInıtialCharacter ()
+    func didLoadInitialCharacter ()
 }
 
 class CharacterViewModel {
@@ -17,23 +17,21 @@ class CharacterViewModel {
     var cellViewModel : [RMCharacterCollectionViewCellViewModel] = []
     private let service = RMApiCall()
     
-    func fetchCharacterdata (request : RMRequest) {
-        
-        service.executeApiCall(request: request, dataType: AllCharacters.self) { [weak self] result in
+    func fetchCharacterData (request : RMRequest) {
+        service.executeApiCall(request: request, dataType: [Characters].self) { [weak self] result in
             switch result {
             case .failure(let error):
                 print(error)
             case .success(let model):
                 DispatchQueue.main.async {
-                    let characters = model.results
-                    for character in characters {
+                    self?.cellViewModel.removeAll()
+                    for character in model {
                         let viewModel = RMCharacterCollectionViewCellViewModel(characterName: character.name, characterStatus: character.status, characterGender: character.gender, characterImage: URL(string: character.image))
                         self?.cellViewModel.append(viewModel)
-                        self?.delegate?.didLoadInıtialCharacter()
-                        
+                        self?.delegate?.didLoadInitialCharacter()
                     }
+                    
                 }
-                
             }
         }
     }

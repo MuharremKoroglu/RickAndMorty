@@ -28,9 +28,13 @@ class RMRequest {
         urlString += endPoints.rawValue
         
         if !path.isEmpty {
-            path.forEach {
-                urlString += "/\($0)"
+            urlString += "/"
+            urlString += "["
+            for singlePath in path {
+                urlString += "\(singlePath),"
             }
+            urlString = String(urlString.dropLast(1))
+            urlString += "]"
         }
         
         if !query.isEmpty {

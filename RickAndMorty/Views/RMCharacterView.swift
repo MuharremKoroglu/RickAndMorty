@@ -9,7 +9,8 @@ import UIKit
 
 class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CharacterViewModelDelegate {
     
-    private let viewModel = CharacterViewModel()
+    private var characterIDs : [String] = []
+    private let characterViewModel = CharacterViewModel()
     
     private let spinner : UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -31,22 +32,35 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
         return collectionView
     }()
     
+    private let noCharacterLabel : UILabel = {
+        let noCharacterLabel = UILabel()
+        noCharacterLabel.text = "No characters found at this location!"
+        noCharacterLabel.textAlignment = .center
+        noCharacterLabel.textColor = .label
+        noCharacterLabel.font = .systemFont(ofSize: 15, weight: .bold)
+        noCharacterLabel.translatesAutoresizingMaskIntoConstraints = false
+        return noCharacterLabel
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         setUpCollectionView()
         addConstraint()
         spinner.startAnimating()
-        viewModel.delegate = self
-        viewModel.fetchCharacterdata(request: RMRequest(endPoints: .character))
+        noCharacterLabel.isHidden = false
+        characterViewModel.delegate = self
+
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func didLoadInıtialCharacter() {
+    func didLoadInitialCharacter() {
         spinner.stopAnimating()
+        spinner.isHidden = true
+        noCharacterLabel.isHidden = true
         collectionView.isHidden = false
         collectionView.reloadData()
         UIView.animate(withDuration: 0.4) {
@@ -55,13 +69,18 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     private func addConstraint() {
-        addSubViews(spinner,collectionView)
+        addSubViews(spinner,collectionView,noCharacterLabel)
         NSLayoutConstraint.activate([
             spinner.widthAnchor.constraint(equalToConstant: 100),
             spinner.heightAnchor.constraint(equalToConstant: 100),
             spinner.centerXAnchor.constraint(equalTo: centerXAnchor),
             spinner.centerYAnchor.constraint(equalTo: centerYAnchor),
             
+            noCharacterLabel.widthAnchor.constraint(equalToConstant: 300),
+            noCharacterLabel.heightAnchor.constraint(equalToConstant: 20),
+            noCharacterLabel.topAnchor.constraint(equalTo: spinner.bottomAnchor,constant: 10),
+            noCharacterLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+        
             collectionView.topAnchor.constraint(equalTo: topAnchor),
             collectionView.leftAnchor.constraint(equalTo: leftAnchor),
             collectionView.rightAnchor.constraint(equalTo: rightAnchor),
@@ -74,8 +93,21 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
         collectionView.dataSource = self
     }
     
+    func handleParsedCharacterIDs(_ parsedCharacterIDs: [String]) {
+        characterIDs = parsedCharacterIDs
+        if characterIDs.isEmpty == true {
+            self.collectionView.isHidden = true
+            self.spinner.isHidden = false
+            self.noCharacterLabel.isHidden = false
+            self.spinner.startAnimating()
+        }else{
+            characterViewModel.fetchCharacterData(request: RMRequest(endPoints: .character,path: characterIDs))
+        }
+        collectionView.reloadData()
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.cellViewModel.count
+        return characterViewModel.cellViewModel.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -85,7 +117,7 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
         ) as? RMCharacterCollectionViewCell else {
             fatalError("This cell not supported!")
         }
-        cell.configure(with: viewModel.cellViewModel[indexPath.row])
+        cell.configure(with: characterViewModel.cellViewModel[indexPath.row])
         return cell
     }
     

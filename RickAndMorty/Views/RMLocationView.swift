@@ -8,7 +8,16 @@
 import Foundation
 import UIKit
 
-class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout{
+protocol LocationViewDelegate: AnyObject {
+    func didSelectLocation(with parsedCharacterIDs: [String])
+}
+
+class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, LocationViewModelDelegate{
+
+    weak var delegate: LocationViewDelegate?
+    private let viewModel = LocationViewModel()
+    private var parsedCharacterIDs : [String] = []
+    private var selected : String = "Earth (C-137)"
     
     private let spinner : UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -24,7 +33,7 @@ class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSou
         layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(RMLocationCollectionViewCell.self, forCellWithReuseIdentifier: RMLocationCollectionViewCell.cellIndetifier)
         collectionView.isHidden = true
         collectionView.alpha = 0
         return collectionView
@@ -36,11 +45,31 @@ class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSou
         setUpCollectionView()
         addConstraint()
         spinner.startAnimating()
+        viewModel.delegate = self
+        viewModel.fetchLocationName(request: RMRequest(endPoints: .location))
+        
+        if let firstLocation = viewModel.locationNameArray.first {
+            selected = firstLocation.name
+        }
         
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func didLoadLocations() {
+        spinner.stopAnimating()
+        collectionView.isHidden = false
+        collectionView.reloadData()
+        
+        UIView.animate(withDuration: 0.4) {
+            self.collectionView.alpha = 1
+        }
+        
+        if let index = viewModel.locationNameArray.firstIndex(where: {$0.name == selected}) {
+            clickForParseCharacterID(IndexPath(row: index, section: 0))
+        }
     }
     
     private func addConstraint() {
@@ -61,27 +90,47 @@ class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSou
     private func setUpCollectionView () {
         collectionView.delegate = self
         collectionView.dataSource = self
-        
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-            self.spinner.stopAnimating()
-            self.collectionView.isHidden = false
-            
-            UIView.animate(withDuration: 0.4) {
-                self.collectionView.alpha = 1
-            }
-        })
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return viewModel.locationNameArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: RMLocationCollectionViewCell.cellIndetifier,
+            for: indexPath
+        ) as? RMLocationCollectionViewCell else {
+            fatalError("This cell not supported!")
+        }
+        cell.configure(with: viewModel.locationNameArray[indexPath.row])
         cell.layer.cornerRadius = 20
-        cell.backgroundColor = .orange
+        if viewModel.locationNameArray[indexPath.row].name == selected {
+            cell.layer.borderColor = UIColor.systemGreen.cgColor
+            cell.layer.borderWidth = 4
+         } else {
+             cell.layer.borderWidth = 0
+         }
+        
         return cell
+    }
+    
+    func clickForParseCharacterID (_ indexpath : IndexPath) {
+        selected = viewModel.locationNameArray[indexpath.row].name
+        let location = viewModel.locationNameArray[indexpath.row]
+        self.parsedCharacterIDs.removeAll()
+        for resident in location.residents {
+            if let url = URL(string: resident) {
+                let characterID = url.lastPathComponent
+                self.parsedCharacterIDs.append(characterID)
+            }
+        }
+        delegate?.didSelectLocation(with: parsedCharacterIDs)
+        self.collectionView.reloadData()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        clickForParseCharacterID(indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -91,6 +140,4 @@ class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSou
         
         return CGSize(width: width, height: height)
     }
-    
-    
 }

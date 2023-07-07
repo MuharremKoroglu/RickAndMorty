@@ -48,15 +48,16 @@ class RMCharacterCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setUpShadowColorForGenderType () {
+    private func setUpBorderColorForGenderType () {
         let maleColor : CGColor = UIColor.systemBlue.cgColor
         let femaleColor : CGColor = UIColor.systemPurple.cgColor
         let unknownColor : CGColor = UIColor.systemRed.cgColor
         
-        contentView.layer.shadowColor = self.characterGender == "Male" ? maleColor : (self.characterGender == "Female" ? femaleColor : unknownColor)
+        contentView.layer.borderColor = self.characterGender == "Male" ? maleColor : (self.characterGender == "Female" ? femaleColor : unknownColor)
+    
+        contentView.layer.cornerRadius = 10
+        contentView.layer.borderWidth = 3
         
-        contentView.layer.shadowOpacity = 1.5
-        contentView.layer.shadowOffset = CGSize(width: -4, height: 4)
     }
     
     private func setUpConstraints () {
@@ -101,13 +102,14 @@ class RMCharacterCollectionViewCell: UICollectionViewCell {
                 DispatchQueue.main.async {
                     let image = UIImage(data: data)
                     self?.characterImageView.image = image
-                    self?.setUpShadowColorForGenderType()
+                    self?.setUpBorderColorForGenderType()
                 }
             case .failure(let error):
                 print(error.localizedDescription)
             }
         }
     }
+    
     
     
 }

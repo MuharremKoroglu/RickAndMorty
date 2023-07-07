@@ -7,18 +7,16 @@
 
 import UIKit
 
-class RMCharacterViewController: UIViewController {
+class RMCharacterViewController: UIViewController, LocationViewDelegate {
     
     private let characterView = RMCharacterView()
     private let locationView = RMLocationView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         view.backgroundColor = .systemBackground
-        
         setUpViews()
-
+        locationView.delegate = self
     }
     
     private func setUpViews () {
@@ -35,5 +33,9 @@ class RMCharacterViewController: UIViewController {
             characterView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
             characterView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+    }
+    
+    func didSelectLocation(with parsedCharacterIDs: [String]) {
+        characterView.handleParsedCharacterIDs(parsedCharacterIDs)
     }
 }

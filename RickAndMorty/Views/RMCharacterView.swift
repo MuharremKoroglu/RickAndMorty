@@ -7,8 +7,16 @@
 
 import UIKit
 
+protocol RMCharacterViewDelegate : AnyObject {
+    func selectedCharacter (
+        _ characterView : RMCharacterView,
+        character : Character)
+}
+
 class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, CharacterViewModelDelegate {
     
+    weak var delegate : RMCharacterViewDelegate?
+    private var selectedCharacters : [Character] = []
     private var characterIDs : [String] = []
     private let characterViewModel = CharacterViewModel()
     
@@ -23,7 +31,7 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
         let layout = UICollectionViewFlowLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
         collectionView.showsVerticalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(RMCharacterCollectionViewCell.self, forCellWithReuseIdentifier: RMCharacterCollectionViewCell.cellIdentifier)
@@ -66,6 +74,10 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
         UIView.animate(withDuration: 0.4) {
             self.collectionView.alpha = 1
         }
+    }
+    
+    func didSelectedCharacter(with character: [Character]) {
+        self.selectedCharacters = character
     }
     
     private func addConstraint() {
@@ -127,6 +139,12 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
         let height = width * 1.5
         
         return CGSize(width: width, height: height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let character = selectedCharacters[indexPath.row]
+        self.delegate?.selectedCharacter(self, character: character)
     }
     
 }

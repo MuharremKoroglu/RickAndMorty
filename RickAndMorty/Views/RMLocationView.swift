@@ -12,7 +12,7 @@ protocol LocationViewDelegate: AnyObject {
     func didSelectLocation(with parsedCharacterIDs: [String])
 }
 
-class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, LocationViewModelDelegate{
+class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate, LocationViewModelDelegate{
 
     weak var delegate: LocationViewDelegate?
     private let viewModel = LocationViewModel()
@@ -34,6 +34,7 @@ class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSou
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.register(RMLocationCollectionViewCell.self, forCellWithReuseIdentifier: RMLocationCollectionViewCell.cellIndetifier)
+        collectionView.register(RMLocationLoaderCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: RMLocationLoaderCollectionReusableView.identifier)
         collectionView.isHidden = true
         collectionView.alpha = 0
         return collectionView
@@ -139,5 +140,47 @@ class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSou
         let height = width * 0.25
         
         return CGSize(width: width, height: height)
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        guard viewModel.areThereMoreLocationIndicator,
+              !viewModel.isLoadMoreLocation,
+              !viewModel.locationNameArray.isEmpty,
+              let nextUrl = viewModel.locationInfo?.next,
+              let url = URL(string: nextUrl)  else {
+            return
+        }
+        
+        Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [ weak self ] timer in
+            let offset = scrollView.contentOffset.x
+            let totalContentWidth = scrollView.contentSize.width
+            let totalScrollViewFixedWidth = scrollView.frame.size.width
+            
+            if offset >= (totalContentWidth - totalScrollViewFixedWidth - 120) {
+                self?.viewModel.fetchMoreLocation(url: url)
+            }
+            timer.invalidate()
+        }
+
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        guard kind == UICollectionView.elementKindSectionFooter,
+            let footer = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: RMLocationLoaderCollectionReusableView.identifier,
+            for: indexPath) as? RMLocationLoaderCollectionReusableView else {
+            fatalError("Unsupported")
+        }
+        footer.startAnimating()
+        return footer
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
+        guard viewModel.areThereMoreLocationIndicator else {
+            return .zero
+        }
+        return CGSize(width: 100, height: collectionView.frame.height)
     }
 }

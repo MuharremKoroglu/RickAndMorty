@@ -7,8 +7,8 @@
 
 import UIKit
 
-class RMCharacterViewController: UIViewController, LocationViewDelegate {
-    
+class RMCharacterViewController: UIViewController, LocationViewDelegate, RMCharacterViewDelegate {
+
     private let characterView = RMCharacterView()
     private let locationView = RMLocationView()
 
@@ -16,10 +16,11 @@ class RMCharacterViewController: UIViewController, LocationViewDelegate {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setUpViews()
-        locationView.delegate = self
     }
     
     private func setUpViews () {
+        locationView.delegate = self
+        characterView.delegate = self
         view.addSubViews(characterView,locationView)
         NSLayoutConstraint.activate([
             
@@ -38,4 +39,12 @@ class RMCharacterViewController: UIViewController, LocationViewDelegate {
     func didSelectLocation(with parsedCharacterIDs: [String]) {
         characterView.handleParsedCharacterIDs(parsedCharacterIDs)
     }
+
+    func selectedCharacter(_ characterView: RMCharacterView, character: Character) {
+        let viewModel = RMCharacterDetailViewViewModel(character: character)
+        let detailVC = RMCharacterDetailViewController(viewModel: viewModel)
+        detailVC.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
 }

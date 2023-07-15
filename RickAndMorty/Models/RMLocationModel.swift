@@ -10,6 +10,15 @@ import Foundation
 // MARK: - Locations
 struct Locations: Codable {
     let results: [LocationResult]
+    let info : LocationInfo
+}
+
+// MARK: - LocationInfo
+struct LocationInfo : Codable {
+    let count: Int
+    let pages: Int
+    let next: String?
+    let prev: String?
 }
 
 // MARK: - Result

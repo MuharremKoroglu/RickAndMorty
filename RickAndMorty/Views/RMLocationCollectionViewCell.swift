@@ -24,8 +24,8 @@ class RMLocationCollectionViewCell : UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.backgroundColor = .secondarySystemBackground
-        contentView.layer.cornerRadius = 20
         setUpConstraints()
+        contentView.layer.cornerRadius = 20
     }
     
     required init?(coder: NSCoder) {

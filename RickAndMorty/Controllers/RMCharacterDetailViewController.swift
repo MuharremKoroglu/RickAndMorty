@@ -10,9 +10,11 @@ import UIKit
 class RMCharacterDetailViewController: UIViewController {
     
     private var viewModel : RMCharacterDetailViewViewModel
-
+    private let characterDetailView : RMCharacterDetailView
+    
     init(viewModel : RMCharacterDetailViewViewModel) {
         self.viewModel = viewModel
+        self.characterDetailView = RMCharacterDetailView(frame: .zero, viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
         
     }
@@ -25,7 +27,18 @@ class RMCharacterDetailViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = viewModel.title
+        view.addSubview(characterDetailView)
+        setUpConstraints()
     }
+    
+    private func setUpConstraints () {
+        NSLayoutConstraint.activate([
+        
+            characterDetailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            characterDetailView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            characterDetailView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            characterDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
-
+        ])
+    }
 }

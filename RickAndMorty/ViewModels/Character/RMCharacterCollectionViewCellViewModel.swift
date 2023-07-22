@@ -37,22 +37,6 @@ class RMCharacterCollectionViewCellViewModel {
             return
         }
         
-        let request = URLRequest(url: url)
-        
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            
-            guard let serverResponse = response as? HTTPURLResponse, serverResponse.statusCode == 200 else {
-                completion(.failure(URLError(.badServerResponse)))
-                return
-            }
-            
-            guard let data = data, error == nil else {
-                completion(.failure(URLError(.dataNotAllowed)))
-                return
-            }
-            
-            completion(.success(data))
-        }
-        task.resume()
+        RMImageDownloader.shared.downloadImage(url, completion: completion)
     }
 }

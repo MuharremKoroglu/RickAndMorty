@@ -76,16 +76,4 @@ class LocationViewModel {
     }
 }
 
-struct LocationName {
-    
-    var location : LocationResult
-    
-    var name : String {
-        location.name
-    }
-    
-    var residents : [String] {
-        location.residents
-    }
 
-}

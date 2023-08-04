@@ -10,32 +10,17 @@ import UIKit
 class RMCharacterDetailViewInfoCollectionViewCellViewModel {
     
     private let contentType : ContentType
-    private let sectionContent : String
+    private var sectionContent : String
+    private let dateFormatter = RMDateFormatter()
     
     var sectionTitle : String {
         contentType.displayTitle
     }
     
-    private let dateFormatter : DateFormatter = {
-        var dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
-        dateFormatter.locale = Locale(identifier: "en_US")
-        return dateFormatter
-    }()
-    
-    private let originalFormatter : DateFormatter = {
-        var originalFormatter = DateFormatter()
-        originalFormatter.dateFormat = "d MMMM yyyy, HH:mm:ss"
-        originalFormatter.locale = Locale(identifier: "en_US")
-        return originalFormatter
-    }()
-    
     var displayContent : String {
         if sectionContent.isEmpty {return "None"}
         if contentType == .created {
-            if let date = self.dateFormatter.date(from: self.sectionContent) {
-                return self.originalFormatter.string(from: date)
-            }
+            self.sectionContent = dateFormatter.formattedDate(with: self.sectionContent)
         }
 
         return sectionContent

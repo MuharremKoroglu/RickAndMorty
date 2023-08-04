@@ -10,6 +10,15 @@ import Foundation
 // MARK: - Episodes
 struct Episodes: Codable {
     let results: [EpisodesResult]
+    let info : EpisodesInfo
+}
+
+// MARK: - EpisodesInfo
+struct EpisodesInfo : Codable {
+    let count: Int
+    let pages: Int
+    let next: String?
+    let prev: String?
 }
 
 // MARK: - Result

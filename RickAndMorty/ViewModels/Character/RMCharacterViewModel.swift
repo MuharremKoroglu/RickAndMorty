@@ -23,7 +23,7 @@ class CharacterViewModel {
         service.executeApiCall(request: request, dataType: [Character].self) { [weak self] result in
             switch result {
             case .failure(let error):
-                print(error)
+                print(error.localizedDescription)
             case .success(let model):
                 DispatchQueue.main.async {
                     self?.cellViewModel.removeAll()

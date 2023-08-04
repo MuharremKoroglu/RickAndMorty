@@ -9,7 +9,7 @@ import Foundation
 
 class RMCharacterCollectionViewCellViewModel {
     
-    public let characterName : String
+    let characterName : String
     private let characterStatus : CharacterStatus
     private let characterGender : CharacterGender
     private let characterImage : URL?

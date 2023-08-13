@@ -15,8 +15,7 @@ class RMEpisodeDetailViewViewModel {
     
     weak var delegate : RMEpisodeDetailViewViewModelDelegate?
     private let episode : EpisodeInfo
-    private let service = RMApiCall()
-    private let dateFormatter = RMDateFormatter()
+    private let service : RMApiCallService
     var sections : [SectionType] = []
     private var parsedCharacterID : [String] = []
     private var characters : [Character] = []
@@ -28,8 +27,9 @@ class RMEpisodeDetailViewViewModel {
     }
 
     
-    init(episode: EpisodeInfo) {
+    init(episode: EpisodeInfo,service : RMApiCallService) {
         self.episode = episode
+        self.service = service
         getReleatedCharacters()
     }
     
@@ -62,7 +62,7 @@ class RMEpisodeDetailViewViewModel {
     private func setUpSections () {
         
         var createdDate : String {
-            return self.dateFormatter.formattedDate(with: episode.episodeCreated)
+            return RMDateFormatter.shared.formattedDate(with: episode.episodeCreated)
         }
     
         sections = [

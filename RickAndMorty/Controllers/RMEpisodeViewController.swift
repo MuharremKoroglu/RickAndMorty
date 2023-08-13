@@ -9,7 +9,7 @@ import UIKit
 
 class RMEpisodeViewController: UIViewController, RMEpisodeViewDelegate {
 
-    private let episodeView = RMEpisodeView()
+    private let episodeView = RMEpisodeView(frame: .zero, viewModel: RMEpisodeViewModel(service: RMApiCall()))
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,7 +32,8 @@ class RMEpisodeViewController: UIViewController, RMEpisodeViewDelegate {
     }
     
     func rmEpisodeViewDelegate(_ episodeView: RMEpisodeView, selectedEpisode: EpisodeInfo) {
-        let viewModel = RMEpisodeDetailViewViewModel(episode: selectedEpisode)
+        let service : RMApiCallService = RMApiCall()
+        let viewModel = RMEpisodeDetailViewViewModel(episode: selectedEpisode, service: service)
         let vc = RMEpisodeDetailViewController(viewModel: viewModel)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)

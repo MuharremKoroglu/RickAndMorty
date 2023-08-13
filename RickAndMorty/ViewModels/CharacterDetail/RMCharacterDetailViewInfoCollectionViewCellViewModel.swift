@@ -11,7 +11,6 @@ class RMCharacterDetailViewInfoCollectionViewCellViewModel {
     
     private let contentType : ContentType
     private var sectionContent : String
-    private let dateFormatter = RMDateFormatter()
     
     var sectionTitle : String {
         contentType.displayTitle
@@ -20,7 +19,7 @@ class RMCharacterDetailViewInfoCollectionViewCellViewModel {
     var displayContent : String {
         if sectionContent.isEmpty {return "None"}
         if contentType == .created {
-            self.sectionContent = dateFormatter.formattedDate(with: self.sectionContent)
+            self.sectionContent = RMDateFormatter.shared.formattedDate(with: self.sectionContent)
         }
 
         return sectionContent

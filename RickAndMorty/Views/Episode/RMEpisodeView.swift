@@ -17,7 +17,7 @@ protocol RMEpisodeViewDelegate : AnyObject {
 class RMEpisodeView : UIView , UITableViewDelegate, UITableViewDataSource,RMEpisodeViewModelDelegate, UIScrollViewDelegate {
 
     weak var delegate : RMEpisodeViewDelegate?
-    let viewModel = RMEpisodeViewModel()
+    let viewModel : RMEpisodeViewModel
 
     private let spinner : UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -39,7 +39,8 @@ class RMEpisodeView : UIView , UITableViewDelegate, UITableViewDataSource,RMEpis
     }()
     
     
-    override init(frame: CGRect) {
+    init(frame: CGRect, viewModel : RMEpisodeViewModel) {
+        self.viewModel = viewModel
         super.init(frame: frame)
         backgroundColor = .systemBackground
         translatesAutoresizingMaskIntoConstraints = false

@@ -15,12 +15,16 @@ protocol LocationViewModelDelegate : AnyObject {
 class LocationViewModel {
 
     weak var delegate : LocationViewModelDelegate?
-    private let service = RMApiCall()
+    private let service : RMApiCallService
     var locationNameArray : [LocationName] = []
     var locationInfo : LocationInfo? = nil
     var isLoadMoreLocation = false
     var areThereMoreLocationIndicator : Bool {
         return locationInfo?.next != nil
+    }
+    
+    init(service: RMApiCallService) {
+        self.service = service
     }
     
     func fetchLocationName (request : RMRequest) {

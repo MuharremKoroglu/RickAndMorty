@@ -15,7 +15,7 @@ protocol LocationViewDelegate: AnyObject {
 class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout,UIScrollViewDelegate, LocationViewModelDelegate{
 
     weak var delegate: LocationViewDelegate?
-    private let viewModel = LocationViewModel()
+    private let viewModel : LocationViewModel
     private var parsedCharacterIDs : [String] = []
     private var selected : String = "Earth (C-137)"
     
@@ -40,7 +40,8 @@ class RMLocationView : UIView, UICollectionViewDelegate, UICollectionViewDataSou
         return collectionView
     }()
 
-    override init(frame: CGRect) {
+    init(frame: CGRect, viewModel : LocationViewModel) {
+        self.viewModel = viewModel
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         setUpCollectionView()

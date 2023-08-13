@@ -15,11 +15,15 @@ class RMEpisodeViewModel {
     
     weak var delegate : RMEpisodeViewModelDelegate?
     var episodes : [EpisodeInfo] = []
-    private let service = RMApiCall()
+    private let service : RMApiCallService
     var episodeInfo : EpisodesInfo? = nil
     var isLoadMoreEpisode = false
     var areThereMoreEpisodeIndicator : Bool {
         return episodeInfo?.next != nil
+    }
+    
+    init(service: RMApiCallService) {
+        self.service = service
     }
     
     func fetchEpisodes (request : RMRequest) {

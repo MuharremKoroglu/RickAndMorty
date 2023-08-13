@@ -9,6 +9,9 @@ import UIKit
 
 class RMDateFormatter {
     
+    static let shared = RMDateFormatter()
+    private init () {}
+    
     private let dateFormatter : DateFormatter = {
         var dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
@@ -29,7 +32,9 @@ class RMDateFormatter {
             return date
         }
         
-        return self.originalFormatter.string(from: choosenDate)
+        let parsedDate = self.originalFormatter.string(from: choosenDate)
+        
+        return parsedDate
     }
     
 }

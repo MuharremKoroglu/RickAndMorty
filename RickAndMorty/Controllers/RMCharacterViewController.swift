@@ -9,8 +9,8 @@ import UIKit
 
 class RMCharacterViewController: UIViewController, LocationViewDelegate, RMCharacterViewDelegate {
 
-    private let characterView = RMCharacterView()
-    private let locationView = RMLocationView()
+    private let characterView = RMCharacterView(frame: .zero, characterViewModel: CharacterViewModel(service: RMApiCall()))
+    private let locationView = RMLocationView(frame: .zero, viewModel: LocationViewModel(service: RMApiCall()))
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -7,7 +7,11 @@
 
 import Foundation
 
-class RMApiCall {
+protocol RMApiCallService {
+    func executeApiCall<T : Codable> (request : RMRequest, dataType : T.Type, completion : @escaping (Result<T, ApiError>) -> Void)
+}
+
+class RMApiCall : RMApiCallService {
     
     func executeApiCall<T : Codable> (request : RMRequest, dataType : T.Type, completion : @escaping (Result<T, ApiError>) -> Void) {
         

@@ -18,7 +18,7 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
     weak var delegate : RMCharacterViewDelegate?
     private var selectedCharacters : [Character] = []
     private var characterIDs : [String] = []
-    private let characterViewModel = CharacterViewModel()
+    private let characterViewModel : CharacterViewModel
     
     private let spinner : UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -50,7 +50,8 @@ class RMCharacterView: UIView, UICollectionViewDelegate, UICollectionViewDataSou
         return noCharacterLabel
     }()
     
-    override init(frame: CGRect) {
+    init(frame: CGRect,characterViewModel : CharacterViewModel) {
+        self.characterViewModel = characterViewModel
         super.init(frame: frame)
         translatesAutoresizingMaskIntoConstraints = false
         setUpCollectionView()

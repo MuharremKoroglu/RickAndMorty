@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct LocationName {
+struct LocationNameAndResidents {
     
     var location : LocationResult
     

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct EpisodeInfo {
+struct EpisodeInfo : RMCharacterDetailViewEpisodesRendering {
     
     var episodes : EpisodesResult
     

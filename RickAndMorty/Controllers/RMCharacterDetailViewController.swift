@@ -7,8 +7,8 @@
 
 import UIKit
 
-class RMCharacterDetailViewController: UIViewController {
-    
+class RMCharacterDetailViewController: UIViewController, RMCharacterDetailViewDelegate {
+
     private var viewModel : RMCharacterDetailViewViewModel
     private let characterDetailView : RMCharacterDetailView
     
@@ -16,6 +16,8 @@ class RMCharacterDetailViewController: UIViewController {
         self.viewModel = viewModel
         self.characterDetailView = RMCharacterDetailView(frame: .zero, viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
+        self.characterDetailView.delegate = self
+
         
     }
     
@@ -40,5 +42,14 @@ class RMCharacterDetailViewController: UIViewController {
             characterDetailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
         ])
+    }
+    
+    func selectedEpisode(_ detailView: RMCharacterDetailView, selectedEpisode: EpisodeInfo) {
+        let service : RMApiCallService = RMApiCall()
+        let viewModel = RMEpisodeDetailViewViewModel(episode: selectedEpisode, service: service)
+        let detailVC = RMEpisodeDetailViewController(viewModel: viewModel)
+        detailVC.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(detailVC, animated: true)
+        
     }
 }

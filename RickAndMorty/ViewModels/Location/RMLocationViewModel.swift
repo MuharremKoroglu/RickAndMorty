@@ -16,7 +16,7 @@ class LocationViewModel {
 
     weak var delegate : LocationViewModelDelegate?
     private let service : RMApiCallService
-    var locationNameArray : [LocationName] = []
+    var locationNameArray : [LocationNameAndResidents] = []
     var locationInfo : LocationInfo? = nil
     var isLoadMoreLocation = false
     var areThereMoreLocationIndicator : Bool {
@@ -36,7 +36,7 @@ class LocationViewModel {
                 self?.locationInfo = info
                 
                 DispatchQueue.main.async {
-                    self?.locationNameArray = results.map(LocationName.init)
+                    self?.locationNameArray = results.map(LocationNameAndResidents.init)
                     self?.delegate?.didLoadLocations()
                 }
                 
@@ -60,7 +60,7 @@ class LocationViewModel {
                 switch result {
                 case .success(let model):
                     let results = model.results
-                    let mappedResults = results.map(LocationName.init)
+                    let mappedResults = results.map(LocationNameAndResidents.init)
                     
                     let info = model.info
                     strongSelf.locationInfo = info

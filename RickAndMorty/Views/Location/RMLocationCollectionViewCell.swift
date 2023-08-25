@@ -55,7 +55,7 @@ class RMLocationCollectionViewCell : UICollectionViewCell {
         locationName.text = nil
     }
     
-    public func configure (with model : LocationName) {
+    public func configure (with model : LocationNameAndResidents) {
         self.locationName.text = model.name
     }
     

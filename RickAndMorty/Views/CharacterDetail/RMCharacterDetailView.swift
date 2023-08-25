@@ -7,10 +7,18 @@
 
 import UIKit
 
+protocol RMCharacterDetailViewDelegate : AnyObject {
+    func selectedEpisode (
+        _ detailView : RMCharacterDetailView,
+        selectedEpisode : EpisodeInfo
+    )
+}
+
 class RMCharacterDetailView: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
     
     private var collectionView : UICollectionView?
     private var viewModel : RMCharacterDetailViewViewModel
+    weak var delegate : RMCharacterDetailViewDelegate?
 
     private let spinner : UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView(style: .large)
@@ -74,6 +82,9 @@ class RMCharacterDetailView: UIView, UICollectionViewDelegate, UICollectionViewD
             RMCharacterDetailViewInfoCollectionViewCell.self,
             forCellWithReuseIdentifier: RMCharacterDetailViewInfoCollectionViewCell.cellIdentifier
         )
+        collectionView.register(
+            RMCharacterDetailViewEpisodesCollectionViewCell.self,
+            forCellWithReuseIdentifier: RMCharacterDetailViewEpisodesCollectionViewCell.cellIdentifier)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.showsVerticalScrollIndicator = false
         return collectionView
@@ -87,11 +98,27 @@ class RMCharacterDetailView: UIView, UICollectionViewDelegate, UICollectionViewD
             return viewModel.createCharacterImageSection()
         case.characterInfo:
             return viewModel.createCharacterInfoSection()
+        case .characterEpisodes:
+            return viewModel.createCharacterEpisodesSection()
 
         }
 
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let sectionType = viewModel.sections[indexPath.section]
+        
+        switch sectionType {
+        case .characterImage,.characterInfo:
+            break
+        case .characterEpisodes(let viewModels):
+            let episodes = viewModels[indexPath.row].characterEpisodes
+            guard let selectedEpisode = episodes.first else {
+                return
+            }
+            self.delegate?.selectedEpisode(self, selectedEpisode: selectedEpisode)
+        }
+    }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.sections.count
@@ -105,7 +132,8 @@ class RMCharacterDetailView: UIView, UICollectionViewDelegate, UICollectionViewD
             return 1
         case .characterInfo(let viewModels):
             return viewModels.count
-
+        case .characterEpisodes(let viewModels):
+            return viewModels.count
         }
     }
     
@@ -133,7 +161,17 @@ class RMCharacterDetailView: UIView, UICollectionViewDelegate, UICollectionViewD
             }
             cell.configure(with: viewModels[indexPath.row])
             return cell
-
+            
+        case .characterEpisodes(let viewModels):
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: RMCharacterDetailViewEpisodesCollectionViewCell.cellIdentifier,
+                for: indexPath
+            ) as? RMCharacterDetailViewEpisodesCollectionViewCell else {
+                fatalError()
+            }
+            cell.configure(with: viewModels[indexPath.row])
+            return cell
+            
         }
        
     }
